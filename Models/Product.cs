@@ -15,6 +15,8 @@ namespace Demo4.Models
 
         public int Price { get; set; }
 
+        public bool Stock { get; set; }
+
         static List<Product> products = new List<Product>();
 
         public static void getProduct(string name)
@@ -32,14 +34,36 @@ namespace Demo4.Models
             Console.WriteLine($"Product Name: {name} | Price: {price}$ | Total Price: {(price * quantity)}$");
         }
 
+        public static bool setStock(int quantity)
+        {
+            if(quantity <= 0)
+            {
+                return false;
+            }else
+            {
+                return true;
+            }
+        }
+        public string checkStock()
+        {
+            if (Stock)
+            {
+                return "Product is in stock.";
+            }
+            else
+            {
+                return "Product is out of stock.";
+            }
+        }
+
         public void getProduct()
         {
-            Console.WriteLine($"Product Name: {Name} | Price: {Price}$ | Total Price: {(Price * Quantity)}$");
+            Console.WriteLine($"Product Name: {Name} | Price: {Price}$ | Total Price: {(Price * Quantity)}$ | {this.checkStock()}");
         }
 
         static void addProduct(string name, int price, int quantity)
         {
-            products.Add(new Product { Name = name, Price = price, Quantity = quantity });
+            products.Add(new Product { Name = name, Price = price, Quantity = quantity, Stock = setStock(quantity)});
         }
 
         public static void addMultiProducts()
@@ -68,6 +92,25 @@ namespace Demo4.Models
             {
                 product.getProduct();
             }
+
+            Console.WriteLine("---------------------------------------------------");
+            checkAllStock();
+        }
+
+        public static void checkAllStock()
+        {
+            int inStock = 0;
+            foreach (var product in products)
+            {
+                
+
+                if (product.Stock)
+                {
+                    inStock++;
+                }
+            }
+
+            Console.WriteLine($"Total products in stock: {inStock} | Total products out of stock {products.Count - inStock}");
         }
     }
 }
